@@ -4,9 +4,9 @@ public class SistemParkir {
         Scanner input = new Scanner (System.in);
 
         //Deklarasi Variabel
-        String isMember, jenisKendaraan, kode, gedung, exit;
-        int idMasuk, tarifParkirAwal, tarifHelm, totalSementara, waktuParkir,tarifParkirPerjam, tarifParkirTotal, totalPembayaran, pembayaran, kembalian;
-        float diskon, totalDiskon;
+        String isMember, jenisKendaraan, layananHelm, kode, gedung, exit;
+        int idMasuk, tarifParkirAwal=0, tarifHelm=0, totalSementara, waktuParkir,tarifParkirPerjam, tarifParkirTotal, totalPembayaran, pembayaran, kembalian;
+        float diskon=0, totalDiskon;
         System.out.println("==============================================================");
         System.out.println("||                                                        ||");
         System.out.println("||                      SELAMAT DATANG                    ||");
@@ -17,9 +17,11 @@ public class SistemParkir {
         //User menginputkan member atau bukan
         System.out.print("\nAnda pengguna umum atau member\t: ");
         isMember = input.nextLine();
-        System.out.println("Jika anda member, masukkan 0.1; jika bukan, ,masukkan 0");
-        System.out.print("Diskon\t\t\t\t: ");
-        diskon = input.nextFloat();
+        if (isMember.equalsIgnoreCase("member")) {
+            diskon = 0.1f;
+        } else if (isMember.equalsIgnoreCase("umum")) {
+            diskon = 0;
+        }
 
         //User menginputkan nomor polisi, jenis kendaraaan, dan gedung parkir
         System.out.print("Masukkan ID sesuai nomor polisi\t: ");
@@ -29,19 +31,23 @@ public class SistemParkir {
         System.out.print("Masukkan jenis kendaraan Anda\t: ");
         input.nextLine();
         jenisKendaraan = input.nextLine();
-        System.out.print("Masukkan tarif awal (2000/5000)\t: ");
-        tarifParkirAwal = input.nextInt();
         System.out.print("Lokasi Parkir ? (Gedung A/B/C)\t: ");
-        input.nextLine();
         gedung = input.nextLine();
 
-        //User memilih layanan penitipan helm
-        System.out.println("--------------------------------------------------------------------");
-        System.out.println("Apakah anda inginn menggunakan layanan penitipan helm ?");
-        System.out.println("Tarif = Rp 2.000 (ketik 2000 untuk 'iya' atau ketik 0 untuk 'tidak')");
-        System.out.println("--------------------------------------------------------------------");
-        System.out.print("Jawaban\t\t\t\t: ");
-        tarifHelm = input.nextInt();
+        //Menentukan harga tarif awal dan user memilih layanan penitipan helm 
+        if (jenisKendaraan.equalsIgnoreCase("motor")){
+            tarifParkirAwal=2000;
+            System.out.println("------------------------------------------------------------------------");
+            System.out.println("Apakah Anda ingin menggunakan layanan penitipan helm ? Tarif Rp2.000");   
+            System.out.println("------------------------------------------------------------------------");
+            System.out.print("(ya/tidak)\t\t\t: ");
+            layananHelm = input.nextLine();
+            if (layananHelm.equalsIgnoreCase("ya")){
+                tarifHelm = 2000;
+            }
+        } else if (jenisKendaraan.equalsIgnoreCase("mobil")){
+            tarifParkirAwal=5000;
+        }
         
         //Pembuatan kode
         kode = "2939"+gedung+idMasuk;
@@ -60,7 +66,6 @@ public class SistemParkir {
 
         //User keluar parkiran 
         System.out.print("\nKetik 'Exit' jika ingin keluar parkiran : ");
-        input.nextLine();
         exit = input.nextLine();
 
         //User menginputkan kode dan waktu parkir
