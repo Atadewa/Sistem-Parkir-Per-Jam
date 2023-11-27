@@ -5,7 +5,7 @@ public class SistemParkir {
 
         //Deklarasi Variabel
         String isMember, jenisKendaraan, layananHelm, kode, gedung, exit;
-        int idMasuk, tarifParkirAwal=0, tarifHelm=0, totalSementara, waktuParkir,tarifParkirPerjam, tarifParkirTotal, totalPembayaran, pembayaran, kembalian;
+        int idMasuk, tarifParkirAwal=0, tarifHelm=0, totalSementara, waktuParkir,tarifParkirPerjam=0, tarifParkirTotal, totalPembayaran, pembayaran, kembalian;
         int jamAwal, menitAwal, jamAkhir, menitAkhir;
         float diskon=0, totalDiskon;
 
@@ -97,13 +97,41 @@ public class SistemParkir {
         if (jamAkhir!=jamAwal && menitAkhir > menitAwal) {
             waktuParkir+=1;
         }
+
+        //Perhitungan tarif parkir per jam
+        if (jenisKendaraan.equalsIgnoreCase("motor")) {
+            if (waktuParkir==2) {
+            tarifParkirPerjam = 500; //500
+            } else if (waktuParkir==3) {
+            tarifParkirPerjam = 1500; //500+1000
+            } else if (waktuParkir==4) {
+            tarifParkirPerjam = 3000; //500+1000+1500
+            } else if (waktuParkir==5) {
+            tarifParkirPerjam = 5000; //500+1000+1500+2000
+            } else if (waktuParkir>5) {
+            tarifParkirPerjam = 5000 + (waktuParkir-5)*2000; //500+1000+1500+2000+(2000 perjam)
+            } 
+        } 
         
+        if (jenisKendaraan.equalsIgnoreCase("mobil")) {
+            if (waktuParkir==2) {
+            tarifParkirPerjam = 2000; //2000
+            } else if (waktuParkir==3) {
+            tarifParkirPerjam = 5000; //2000+3000
+            } else if (waktuParkir==4) {
+            tarifParkirPerjam = 9000; //2000+3000+4000
+            } else if (waktuParkir==5) {
+            tarifParkirPerjam = 14000; //2000+3000+4000+5000
+            } else if (waktuParkir>5) {
+            tarifParkirPerjam = 14000 + (waktuParkir-5)*5000; //2000+3000+4000+5000+(5000 perjam)
+            }            
+        }
+
         //Perhitungan tarif total
-        tarifParkirPerjam = (waktuParkir-1)*1000;
         tarifParkirTotal = tarifParkirAwal + tarifParkirPerjam;
         totalPembayaran = tarifParkirTotal + tarifHelm;
         totalDiskon = totalPembayaran*diskon;
-        totalPembayaran -=totalDiskon;
+        totalPembayaran -= totalDiskon;
         
         //Output nota pembayaran 
         System.out.println("\n===================================================================");
