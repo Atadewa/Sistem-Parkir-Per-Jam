@@ -17,39 +17,59 @@ public class SistemParkir {
         System.out.println("============================================================");
 
         //User menginputkan member atau bukan
-        System.out.print("\nAnda pengguna umum atau member\t: ");
-        isMember = input.next();
-        if (isMember.equalsIgnoreCase("member")) {
-            diskon = 0.1f;
-        } else if (isMember.equalsIgnoreCase("umum")) {
-            diskon = 0;
+        while (true) {
+            System.out.print("\nAnda pengguna umum atau member\t: ");
+            isMember = input.next();
+            if (isMember.equalsIgnoreCase("member")) {
+                diskon = 0.1f;
+                break;
+            } else if (isMember.equalsIgnoreCase("umum")) {
+                break;
+            } else {
+                System.out.println("Input Invalid!");
+            }
         }
 
         //User menginputkan nomor polisi, jenis kendaraaan, dan gedung parkir
         System.out.print("Masukkan ID sesuai nomor polisi\t: ");
         idMasuk = input.nextInt();
-        System.out.println("Tarif motor : 2000"); 
-        System.out.println("Tarif mobil : 5000"); 
-        System.out.print("Masukkan jenis kendaraan Anda\t: ");
-        jenisKendaraan = input.next();
+
+        while (true) {
+            System.out.println("Jenis kendaraan (motor/mobil)\t: "); 
+            jenisKendaraan = input.next();
+            if (jenisKendaraan.equalsIgnoreCase("motor")) {
+                tarifParkirAwal=2000;
+                System.out.println("------------------------------------------------------------------------");
+                System.out.println("Apakah Anda ingin menggunakan layanan penitipan helm ? Tarif Rp2.000");   
+                System.out.println("------------------------------------------------------------------------");
+            
+        //Menentukan harga tarif awal dan user memilih layanan penitipan helm 
+                while (true) {
+                    System.out.print("(ya/tidak)\t\t\t: ");
+                    layananHelm = input.next();
+                    if (layananHelm.equalsIgnoreCase("ya")){
+                        tarifHelm = 2000;
+                        break;
+                    } else if (layananHelm.equalsIgnoreCase("tidak")){
+                        break;
+                    } else {
+                    System.out.println("Input Invalid");
+                    }
+                }
+                System.out.println(""); 
+                break;
+            } else if (jenisKendaraan.equalsIgnoreCase("mobil")) {
+                tarifParkirAwal=5000;
+                System.out.println("");
+                break;
+            } else {
+                System.out.println("Input Invalid");
+            }
+        }
+
         System.out.print("Lokasi Parkir ? (Gedung A/B/C)\t: ");
         gedung = input.next();
 
-        //Menentukan harga tarif awal dan user memilih layanan penitipan helm 
-        if (jenisKendaraan.equalsIgnoreCase("motor")){
-            tarifParkirAwal=2000;
-            System.out.println("------------------------------------------------------------------------");
-            System.out.println("Apakah Anda ingin menggunakan layanan penitipan helm ? Tarif Rp2.000");   
-            System.out.println("------------------------------------------------------------------------");
-            System.out.print("(ya/tidak)\t\t\t: ");
-            layananHelm = input.next();
-            if (layananHelm.equalsIgnoreCase("ya")){
-                tarifHelm = 2000;
-            }
-        } else if (jenisKendaraan.equalsIgnoreCase("mobil")){
-            tarifParkirAwal=5000;
-        }
-        
         //User menginputkan jam dan menit ketika masuk parkiran
         System.out.print("\nJam masuk parkir (07-22)\t: ");
         jamAwal = input.nextInt();
