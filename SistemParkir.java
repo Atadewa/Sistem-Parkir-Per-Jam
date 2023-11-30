@@ -4,7 +4,8 @@ public class SistemParkir {
         Scanner input = new Scanner (System.in);
 
         //Deklarasi Variabel
-        String isMember, jenisKendaraan, layananHelm, kode, kodeAwal, gedung, exit, kodeAkhir,strukHilang = "" ;
+        String isMember, jenisKendaraan, layananHelm, kode, kodeAwal, exit, kodeAkhir,strukHilang = "" ;
+        char gedung;
         int idMasuk, tarifParkirAwal=0, tarifHelm=0, totalSementara, waktuParkir,tarifParkirPerjam=0, tarifParkirTotal, totalPembayaran, pembayaran,denda = 0, kembalian;
         int jamAwal, menitAwal, jamAkhir, menitAkhir;
         float diskon=0, totalDiskon;
@@ -30,20 +31,21 @@ public class SistemParkir {
             }
         }
 
-        //User menginputkan nomor polisi, jenis kendaraaan, dan gedung parkir
+        //User menginputkan nomor polisi
         System.out.print("Masukkan ID sesuai nomor polisi\t: ");
         idMasuk = input.nextInt();
-
+        
+        //User menginputkan jenis kendaraaan untuk menentukan tarif awal parkir
         while (true) {
-            System.out.println("Jenis kendaraan (motor/mobil)\t: "); 
+            System.out.print("Jenis kendaraan (motor/mobil)\t: "); 
             jenisKendaraan = input.next();
             if (jenisKendaraan.equalsIgnoreCase("motor")) {
                 tarifParkirAwal=2000;
+
+                //User memilih layanan penitipan helm 
                 System.out.println("------------------------------------------------------------------------");
                 System.out.println("Apakah Anda ingin menggunakan layanan penitipan helm ? Tarif Rp2.000");   
                 System.out.println("------------------------------------------------------------------------");
-            
-        //Menentukan harga tarif awal dan user memilih layanan penitipan helm 
                 while (true) {
                     System.out.print("(ya/tidak)\t\t\t: ");
                     layananHelm = input.next();
@@ -65,16 +67,24 @@ public class SistemParkir {
             } else {
                 System.out.println("Input Invalid");
             }
-        
         }
-        System.out.print("Lokasi Parkir ? (Gedung A/B/C)\t: ");
-        gedung = input.next();
+
+        //User menginputkan gedung parkir
+        while (true) {
+            System.out.print("Lokasi Parkir ? (Gedung A/B/C)\t: ");
+            gedung = input.next().charAt(0);
+            if (gedung =='A' || gedung == 'B' || gedung == 'C') {
+                break;
+            } else {
+                System.out.println("Input Invalid!");
+            }   
+        }
 
         //User menginputkan jam dan menit ketika masuk parkiran
         while (true) {
-            System.out.println("Jam masuk parkir (07-22)\t: ");
+            System.out.print("Jam masuk parkir (07-22)\t: ");
             jamAwal = input.nextInt();
-            System.out.println("Menit masuk parkir (00-59)\t: ");
+            System.out.print("Menit masuk parkir (00-59)\t: ");
             menitAwal = input.nextInt();
             if ( (jamAwal >= 7 && jamAwal <= 22) && (menitAwal >= 0 && menitAwal < 60)){
                 break;
@@ -83,7 +93,7 @@ public class SistemParkir {
             }
         }
         
-        //Pembuatan kode
+        //Pembuatan kode dan perhitungan total sementara
         kodeAwal = "2939"+gedung+idMasuk;
         totalSementara = tarifParkirAwal+tarifHelm;
         
@@ -101,8 +111,15 @@ public class SistemParkir {
         System.out.println("===================================================================\n");
 
         //User keluar parkiran 
-        System.out.print("\nKetik 'Exit' jika ingin keluar parkiran : ");
-        exit = input.next();
+        while (true) {
+            System.out.print("\nKetik 'Exit' jika ingin keluar parkiran : ");
+            exit = input.next();
+            if (exit.equalsIgnoreCase("exit")) {
+                break;
+            } else {
+                System.out.println("Input Invalid!");
+            }   
+        }
         
         //User memasukkan nomor struk/kode sampai benar
         //Terdapat opsi kehilangan struk setiap 3x salah memasukkan kode, dan dikenai denda 20.000
@@ -152,41 +169,41 @@ public class SistemParkir {
             
         }
         //Perhitungan waktu selama parkir (jam)
-        if (jamAkhir==jamAwal) {
+        if (jamAkhir == jamAwal) {
             waktuParkir = 1;
         } else {
             waktuParkir = jamAkhir-jamAwal;
         }
 
-        if (jamAkhir!=jamAwal && menitAkhir > menitAwal) {
-            waktuParkir+=1;
+        if (jamAkhir != jamAwal && menitAkhir > menitAwal) {
+            waktuParkir += 1;
         }
 
         //Perhitungan tarif parkir per jam
         if (jenisKendaraan.equalsIgnoreCase("motor")) {
-            if (waktuParkir==2) {
+            if (waktuParkir == 2) {
             tarifParkirPerjam = 500; //500
-            } else if (waktuParkir==3) {
+            } else if (waktuParkir == 3) {
             tarifParkirPerjam = 1500; //500+1000
-            } else if (waktuParkir==4) {
+            } else if (waktuParkir == 4) {
             tarifParkirPerjam = 3000; //500+1000+1500
-            } else if (waktuParkir==5) {
+            } else if (waktuParkir == 5) {
             tarifParkirPerjam = 5000; //500+1000+1500+2000
-            } else if (waktuParkir>5) {
+            } else if (waktuParkir > 5) {
             tarifParkirPerjam = 5000 + (waktuParkir-5)*2000; //500+1000+1500+2000+(2000 perjam)
             } 
         } 
         
         if (jenisKendaraan.equalsIgnoreCase("mobil")) {
-            if (waktuParkir==2) {
+            if (waktuParkir == 2) {
             tarifParkirPerjam = 2000; //2000
-            } else if (waktuParkir==3) {
+            } else if (waktuParkir == 3) {
             tarifParkirPerjam = 5000; //2000+3000
-            } else if (waktuParkir==4) {
+            } else if (waktuParkir == 4) {
             tarifParkirPerjam = 9000; //2000+3000+4000
-            } else if (waktuParkir==5) {
+            } else if (waktuParkir == 5) {
             tarifParkirPerjam = 14000; //2000+3000+4000+5000
-            } else if (waktuParkir>5) {
+            } else if (waktuParkir > 5) {
             tarifParkirPerjam = 14000 + (waktuParkir-5)*5000; //2000+3000+4000+5000+(5000 perjam)
             }            
         }
@@ -197,7 +214,7 @@ public class SistemParkir {
         totalDiskon = totalPembayaran*diskon;
         totalPembayaran -= totalDiskon;
         
-        //Output nota pembayaran 
+        //Output nota pembayaran
         System.out.println("\n===================================================================");
         System.out.println("                         NOTA PEMBAYARAN                         ");
         System.out.println("              Nomor struk               : " + kodeAwal);
@@ -215,12 +232,21 @@ public class SistemParkir {
         }
         System.out.println("              Total                     : " + totalPembayaran);
         System.out.println("===================================================================\n");
+        System.out.println("");
 
-        //User melakukan pembayaran dan menerima kembalian 
-        System.out.print("\nMasukkan nilai yang Anda bayar : ");
-        pembayaran = input.nextInt();   
+        //User melakukan pembayaran 
+        //Perulangan untuk melakukan pembayaran jika uang kurang dari totalPembayaran
+        do {
+            System.out.print("Masukkan nilai uang yang Anda bayar : ");
+            pembayaran = input.nextInt();
+            if (pembayaran < totalPembayaran) {
+                System.out.println("Uang Anda tidak cukup");
+            }  
+        } while (pembayaran < totalPembayaran);
+
+        //User menerima kembalian
         kembalian = pembayaran-totalPembayaran;
-        System.out.println("Kembalian : "+kembalian);
+        System.out.println("Kembalian : " + kembalian);
         
         System.out.println("\n===================================================================");
         System.out.println("||                                                               ||");
@@ -228,8 +254,6 @@ public class SistemParkir {
         System.out.println("||                   SELAMAT DATANG KEMBALI                      ||");
         System.out.println("||                                                               ||");
         System.out.println("===================================================================");
-
-    
-
    }
+
 }
