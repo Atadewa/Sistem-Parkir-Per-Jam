@@ -6,12 +6,15 @@ public class SistemParkir {
         //Deklarasi Variabel
         String isMember, jenisKendaraan, layananHelm, kode, kodeAwal, exit, kodeAkhir,strukHilang = "";
         char gedung;
-        int idMasuk, totalSementara, waktuParkir, totalPembayaran, pembayaran, denda = 0, kembalian;
-        int jamAwal, menitAwal, jamAkhir, menitAkhir;
+        int idMasuk, totalSementara, durasi, totalPembayaran, pembayaran, denda = 0, kembalian;
         float diskon = 0, totalDiskon;
 
         //tarifParkirAwal, tarifParkirPerjam, tarifParkirAkhir, tarifHelm
         int tarifParkir [] = new int [4];
+
+        //waktuParkir[0][0], waktuParkir[0][1]
+        //waktuParkir[1][0], waktuParkir[1][1]
+        int waktuParkir[][] = new int [2][2];
 
         System.out.println("============================================================");
         System.out.println("||                                                        ||");
@@ -86,10 +89,10 @@ public class SistemParkir {
         //User menginputkan jam dan menit ketika masuk parkiran
         while (true) {
             System.out.print("Jam masuk parkir (07-22)\t: ");
-            jamAwal = input.nextInt();
+            waktuParkir[0][0] = input.nextInt();
             System.out.print("Menit masuk parkir (00-59)\t: ");
-            menitAwal = input.nextInt();
-            if ( (jamAwal >= 7 && jamAwal <= 22) && (menitAwal >= 0 && menitAwal < 60)){
+            waktuParkir[0][1] = input.nextInt();
+            if ( (waktuParkir[0][0] >= 7 && waktuParkir[0][0] <= 22) && (waktuParkir[0][1] >= 0 && waktuParkir[0][1] < 60)){
                 break;
             } else {
                 System.out.println("Inputan Invalid!\n");
@@ -160,10 +163,10 @@ public class SistemParkir {
         System.out.println(" ");
         while (true) {
             System.out.print("Jam keluar parkir (07-22)\t: ");
-            jamAkhir = input.nextInt();
+            waktuParkir[1][0] = input.nextInt();
             System.out.print("Menit keluar parkir (00-59)\t: " );
-            menitAkhir = input.nextInt();
-            if (( jamAkhir >= jamAwal && jamAkhir < 22) && (menitAkhir >= 0 && menitAkhir < 60) ) {
+            waktuParkir[1][1] = input.nextInt();
+            if (( waktuParkir[1][0] >= waktuParkir[0][0] && waktuParkir[1][0] < 22) && (waktuParkir[1][1] >= 0 && waktuParkir[1][1] < 60) ) {
                 break;
             } else {
                 System.out.println("Input Invalid!\n");
@@ -172,42 +175,42 @@ public class SistemParkir {
             
         }
         //Perhitungan waktu selama parkir (jam)
-        if (jamAkhir == jamAwal) {
-            waktuParkir = 1;
+        if (waktuParkir[1][0] == waktuParkir[0][0]) {
+            durasi = 1;
         } else {
-            waktuParkir = jamAkhir-jamAwal;
+            durasi = waktuParkir[1][0]-waktuParkir[0][0];
         }
 
-        if (jamAkhir != jamAwal && menitAkhir > menitAwal) {
-            waktuParkir += 1;
+        if (waktuParkir[1][0] != waktuParkir[0][0] && waktuParkir[1][1] > waktuParkir[0][1]) {
+            durasi += 1;
         }
 
         //Perhitungan tarif parkir per jam
         if (jenisKendaraan.equalsIgnoreCase("motor")) {
-            if (waktuParkir == 2) {
+            if (durasi == 2) {
             tarifParkir[1] = 500; //500
-            } else if (waktuParkir == 3) {
+            } else if (durasi == 3) {
             tarifParkir[1] = 1500; //500+1000
-            } else if (waktuParkir == 4) {
+            } else if (durasi == 4) {
             tarifParkir[1] = 3000; //500+1000+1500
-            } else if (waktuParkir == 5) {
+            } else if (durasi == 5) {
             tarifParkir[1] = 5000; //500+1000+1500+2000
-            } else if (waktuParkir > 5) {
-            tarifParkir[1] = 5000 + (waktuParkir-5)*2000; //500+1000+1500+2000+(2000 perjam)
+            } else if (durasi > 5) {
+            tarifParkir[1] = 5000 + (durasi-5)*2000; //500+1000+1500+2000+(2000 perjam)
             } 
         } 
         
         if (jenisKendaraan.equalsIgnoreCase("mobil")) {
-            if (waktuParkir == 2) {
+            if (durasi == 2) {
             tarifParkir[1] = 2000; //2000
-            } else if (waktuParkir == 3) {
+            } else if (durasi == 3) {
             tarifParkir[1] = 5000; //2000+3000
-            } else if (waktuParkir == 4) {
+            } else if (durasi == 4) {
             tarifParkir[1] = 9000; //2000+3000+4000
-            } else if (waktuParkir == 5) {
+            } else if (durasi == 5) {
             tarifParkir[1] = 14000; //2000+3000+4000+5000
-            } else if (waktuParkir > 5) {
-            tarifParkir[1] = 14000 + (waktuParkir-5)*5000; //2000+3000+4000+5000+(5000 perjam)
+            } else if (durasi > 5) {
+            tarifParkir[1] = 14000 + (durasi-5)*5000; //2000+3000+4000+5000+(5000 perjam)
             }            
         }
 
