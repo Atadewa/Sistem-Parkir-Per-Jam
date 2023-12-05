@@ -4,13 +4,16 @@ public class SistemParkir {
         Scanner input = new Scanner (System.in);
 
         //Deklarasi Variabel
-        String isMember, jenisKendaraan, layananHelm, kode, kodeAwal, exit, kodeAkhir,strukHilang = "" ;
+        String isMember, jenisKendaraan, layananHelm, kode, kodeAwal, exit, kodeAkhir,strukHilang = "";
         char gedung;
-        int idMasuk, tarifParkirAwal=0, tarifHelm=0, totalSementara, waktuParkir,tarifParkirPerjam=0, tarifParkirTotal, totalPembayaran, pembayaran,denda = 0, kembalian;
+        int idMasuk, totalSementara, waktuParkir, totalPembayaran, pembayaran, denda = 0, kembalian;
         int jamAwal, menitAwal, jamAkhir, menitAkhir;
-        float diskon=0, totalDiskon;
+        float diskon = 0, totalDiskon;
 
-        System.out.println("==============================================================");
+        //tarifParkirAwal, tarifParkirPerjam, tarifParkirAkhir, tarifHelm
+        int tarifParkir [] = new int [4];
+
+        System.out.println("============================================================");
         System.out.println("||                                                        ||");
         System.out.println("||                      SELAMAT DATANG                    ||");
         System.out.println("||                  DI PARKIRAN BOUGENVILLE               ||");
@@ -40,7 +43,7 @@ public class SistemParkir {
             System.out.print("Jenis kendaraan (motor/mobil)\t: "); 
             jenisKendaraan = input.next();
             if (jenisKendaraan.equalsIgnoreCase("motor")) {
-                tarifParkirAwal=2000;
+                tarifParkir[0]=2000;
 
                 //User memilih layanan penitipan helm 
                 System.out.println("------------------------------------------------------------------------");
@@ -50,18 +53,18 @@ public class SistemParkir {
                     System.out.print("(ya/tidak)\t\t\t: ");
                     layananHelm = input.next();
                     if (layananHelm.equalsIgnoreCase("ya")){
-                        tarifHelm = 2000;
+                        tarifParkir[2] = 2000;
                         break;
                     } else if (layananHelm.equalsIgnoreCase("tidak")){
                         break;
                     } else {
-                    System.out.println("Input Invalid");
+                    System.out.println("Input Invalid!");
                     }
                 }
                 System.out.println(""); 
                 break;
             } else if (jenisKendaraan.equalsIgnoreCase("mobil")) {
-                tarifParkirAwal=5000;
+                tarifParkir[0]=5000;
                 System.out.println("");
                 break;
             } else {
@@ -89,23 +92,23 @@ public class SistemParkir {
             if ( (jamAwal >= 7 && jamAwal <= 22) && (menitAwal >= 0 && menitAwal < 60)){
                 break;
             } else {
-                System.out.println("Inputan Invalid");
+                System.out.println("Inputan Invalid!\n");
             }
         }
         
         //Pembuatan kode dan perhitungan total sementara
         kodeAwal = "2939"+gedung+idMasuk;
-        totalSementara = tarifParkirAwal+tarifHelm;
+        totalSementara = tarifParkir[0]+tarifParkir[2];
         
         //Output struk pembayaran
         System.out.println("\n===================================================================");
         System.out.println("                       STRUK PEMBAYARAN                         ");
         System.out.println("              Nomor Struk               : " + kodeAwal);        
         System.out.println("              Gedung Parkir             : " + gedung);
-        System.out.println("              Tarif Awal Parkir         : " + tarifParkirAwal);
+        System.out.println("              Tarif Awal Parkir         : " + tarifParkir[0]);
         System.out.println("              Tarif Jam Tambahan Parkir : 0" );
         if (jenisKendaraan.equalsIgnoreCase("motor")) {
-            System.out.println("              Tarif Penitipan Helm      : " + tarifHelm);
+            System.out.println("              Tarif Penitipan Helm      : " + tarifParkir[2]);
         }
         System.out.println("              Total Sementara           : "+totalSementara);
         System.out.println("===================================================================\n");
@@ -156,14 +159,14 @@ public class SistemParkir {
         //User menginputkan jam dan menit ketika keluar parkiran
         System.out.println(" ");
         while (true) {
-            System.out.println("Jam keluar parkir (07-22)\t: ");
+            System.out.print("Jam keluar parkir (07-22)\t: ");
             jamAkhir = input.nextInt();
-            System.out.println("Menit keluar parkir (00-59)\t: " );
+            System.out.print("Menit keluar parkir (00-59)\t: " );
             menitAkhir = input.nextInt();
             if (( jamAkhir >= jamAwal && jamAkhir < 22) && (menitAkhir >= 0 && menitAkhir < 60) ) {
                 break;
             } else {
-                System.out.println("Input Invalid!");
+                System.out.println("Input Invalid!\n");
             }
 
             
@@ -182,35 +185,35 @@ public class SistemParkir {
         //Perhitungan tarif parkir per jam
         if (jenisKendaraan.equalsIgnoreCase("motor")) {
             if (waktuParkir == 2) {
-            tarifParkirPerjam = 500; //500
+            tarifParkir[1] = 500; //500
             } else if (waktuParkir == 3) {
-            tarifParkirPerjam = 1500; //500+1000
+            tarifParkir[1] = 1500; //500+1000
             } else if (waktuParkir == 4) {
-            tarifParkirPerjam = 3000; //500+1000+1500
+            tarifParkir[1] = 3000; //500+1000+1500
             } else if (waktuParkir == 5) {
-            tarifParkirPerjam = 5000; //500+1000+1500+2000
+            tarifParkir[1] = 5000; //500+1000+1500+2000
             } else if (waktuParkir > 5) {
-            tarifParkirPerjam = 5000 + (waktuParkir-5)*2000; //500+1000+1500+2000+(2000 perjam)
+            tarifParkir[1] = 5000 + (waktuParkir-5)*2000; //500+1000+1500+2000+(2000 perjam)
             } 
         } 
         
         if (jenisKendaraan.equalsIgnoreCase("mobil")) {
             if (waktuParkir == 2) {
-            tarifParkirPerjam = 2000; //2000
+            tarifParkir[1] = 2000; //2000
             } else if (waktuParkir == 3) {
-            tarifParkirPerjam = 5000; //2000+3000
+            tarifParkir[1] = 5000; //2000+3000
             } else if (waktuParkir == 4) {
-            tarifParkirPerjam = 9000; //2000+3000+4000
+            tarifParkir[1] = 9000; //2000+3000+4000
             } else if (waktuParkir == 5) {
-            tarifParkirPerjam = 14000; //2000+3000+4000+5000
+            tarifParkir[1] = 14000; //2000+3000+4000+5000
             } else if (waktuParkir > 5) {
-            tarifParkirPerjam = 14000 + (waktuParkir-5)*5000; //2000+3000+4000+5000+(5000 perjam)
+            tarifParkir[1] = 14000 + (waktuParkir-5)*5000; //2000+3000+4000+5000+(5000 perjam)
             }            
         }
 
         //Perhitungan tarif total
-        tarifParkirTotal = tarifParkirAwal + tarifParkirPerjam;
-        totalPembayaran = tarifParkirTotal + tarifHelm + denda;
+        tarifParkir[3] = tarifParkir[0] + tarifParkir[1] + tarifParkir[2];
+        totalPembayaran = tarifParkir[3] + denda;
         totalDiskon = totalPembayaran*diskon;
         totalPembayaran -= totalDiskon;
         
@@ -219,10 +222,10 @@ public class SistemParkir {
         System.out.println("                         NOTA PEMBAYARAN                         ");
         System.out.println("              Nomor struk               : " + kodeAwal);
         System.out.println("              Gedung Parkir             : " + gedung);
-        System.out.println("              Tarif Awal Parkir         : " + tarifParkirAwal);
-        System.out.println("              Tarif Jam Tambahan Parkir : " + tarifParkirPerjam);
+        System.out.println("              Tarif Awal Parkir         : " + tarifParkir[0]);
+        System.out.println("              Tarif Jam Tambahan Parkir : " + tarifParkir[1]);
         if (jenisKendaraan.equalsIgnoreCase("motor")) {
-            System.out.println("              Tarif Penitipan Helm      : " + tarifHelm);
+            System.out.println("              Tarif Penitipan Helm      : " + tarifParkir[2]);
         }
         if (isMember.equalsIgnoreCase("member")) {
             System.out.println("              Diskon                    : " + (int)totalDiskon);
