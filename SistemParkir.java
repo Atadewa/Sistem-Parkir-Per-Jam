@@ -186,31 +186,39 @@ public class SistemParkir {
         }
 
         //Perhitungan tarif parkir per jam
+        int tarifJam [][] = {
+            //Baris 1-Tarif perjam untuk motor
+            {500, 1500, 3000, 5000, 5000 + (durasi-5)*2000},
+            //Baris 2-Tarif perjam untuk mobil
+            {2000, 5000, 9000, 14000 + (durasi-5)*5000}
+        };
+
+        //Menentukan Tarif Parkir Perjam untuk motor
         if (jenisKendaraan.equalsIgnoreCase("motor")) {
             if (durasi == 2) {
-            tarifParkir[1] = 500; //500
+            tarifParkir[1] = tarifJam[0][0]; //500
             } else if (durasi == 3) {
-            tarifParkir[1] = 1500; //500+1000
+            tarifParkir[1] = tarifJam[0][1]; //500+1000
             } else if (durasi == 4) {
-            tarifParkir[1] = 3000; //500+1000+1500
+            tarifParkir[1] = tarifJam[0][2]; //500+1000+1500
             } else if (durasi == 5) {
-            tarifParkir[1] = 5000; //500+1000+1500+2000
+            tarifParkir[1] = tarifJam[0][3]; //500+1000+1500+2000
             } else if (durasi > 5) {
-            tarifParkir[1] = 5000 + (durasi-5)*2000; //500+1000+1500+2000+(2000 perjam)
+            tarifParkir[1] = tarifJam[0][4]; //500+1000+1500+2000+(2000 perjam)
             } 
         } 
         
         if (jenisKendaraan.equalsIgnoreCase("mobil")) {
             if (durasi == 2) {
-            tarifParkir[1] = 2000; //2000
+            tarifParkir[1] = tarifJam[1][0]; //2000
             } else if (durasi == 3) {
-            tarifParkir[1] = 5000; //2000+3000
+            tarifParkir[1] = tarifJam[1][1]; //2000+3000
             } else if (durasi == 4) {
-            tarifParkir[1] = 9000; //2000+3000+4000
+            tarifParkir[1] = tarifJam[1][2]; //2000+3000+4000
             } else if (durasi == 5) {
-            tarifParkir[1] = 14000; //2000+3000+4000+5000
+            tarifParkir[1] = tarifJam[1][3]; //2000+3000+4000+5000
             } else if (durasi > 5) {
-            tarifParkir[1] = 14000 + (durasi-5)*5000; //2000+3000+4000+5000+(5000 perjam)
+            tarifParkir[1] = tarifJam[1][4]; //2000+3000+4000+5000+(5000 perjam)
             }            
         }
 
