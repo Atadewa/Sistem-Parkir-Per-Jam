@@ -2,6 +2,34 @@ import java.util.Scanner;
 
 public class SistemParkir {
     
+    static int hitungDenda (Scanner input, String kodeAwal) {
+        for (int counter = 0; true ; ) {
+            System.out.print("Masukkan nomor struk Anda\t: ");
+            String kodeAkhir = input.next();
+            if (kodeAkhir.equals(kodeAwal)) {
+                return 0;
+            } else {
+                System.out.println("Input Invalid!");
+                counter++;
+                if (counter%3 == 0) {
+                    System.out.println("Apakah Anda kehilangan struk pembayaran");
+                    while (true) {
+                        System.out.print("ya/tidak  : ");
+                        String strukHilang = input.next();
+                        if (strukHilang.equalsIgnoreCase("ya")) {
+                            return 20000;
+                        } else if (strukHilang.equalsIgnoreCase("tidak")) {
+                            System.out.println("");
+                            break;
+                        } else {
+                            System.out.println("Input Invalid!");
+                        }
+                    }
+                }
+            }
+        }
+    }
+
     static int hitungWaktu(int[][]waktuParkir){
         int durasi;
         if (waktuParkir[1][0] == waktuParkir[0][0]) {
@@ -52,7 +80,7 @@ public class SistemParkir {
         Scanner input = new Scanner (System.in);
 
         //Deklarasi Variabel
-        String isMember, jenisKendaraan, layananHelm, kode, kodeAwal, exit, kodeAkhir,strukHilang = "";
+        String isMember, jenisKendaraan, layananHelm, kodeAwal, exit, strukHilang = "";
         char gedung;
         int idMasuk, totalSementara, durasi, totalPembayaran, pembayaran, denda = 0, kembalian;
         float diskon = 0, totalDiskon;
@@ -175,37 +203,11 @@ public class SistemParkir {
             }   
         }
         
-        //User memasukkan nomor struk/kode sampai benar
+        //Perhitungan denda dengan cara user memasukkan nomor struk/kode
+        //Jika kode yang dimasukkan benar, maka denda 0. Jika kode salah, maka program akan mengulang
         //Terdapat opsi kehilangan struk setiap 3x salah memasukkan kode, dan dikenai denda 20.000
-        for (int counter = 0; true ;) {
-            System.out.print("Masukkan nomor struk Anda\t: ");
-            kodeAkhir = input.next();
-            if (kodeAkhir.equals(kodeAwal)) {
-                break;
-            } else {
-                System.out.println("Input Invalid!");
-                counter++;
-            }   
-            if (counter%3 == 0) {
-                System.out.println("Apakah Anda kehilangan struk pembayaran");
-                while (true) {
-                    System.out.print("ya/tidak  : ");
-                    strukHilang = input.next();
-                    if (strukHilang.equalsIgnoreCase("ya")) {
-                        denda = 20000;
-                        break;
-                    } else if (strukHilang.equalsIgnoreCase("tidak")) {
-                        System.out.println("");
-                        break;
-                    } else {
-                        System.out.println("Input Invalid!");
-                    }
-                }
-                if (strukHilang.equalsIgnoreCase("ya")) {
-                    break;
-                }
-            }
-        }
+        denda = hitungDenda(input, kodeAwal);
+
 
         //User menginputkan jam dan menit ketika keluar parkiran
         System.out.println(" ");
