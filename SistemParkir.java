@@ -1,6 +1,20 @@
 import java.util.Scanner;
 
 public class SistemParkir {
+    
+    static int hitungWaktu(int[][]waktuParkir){
+        int durasi;
+        if (waktuParkir[1][0] == waktuParkir[0][0]) {
+            durasi = 1;
+        } else {
+            durasi = waktuParkir[1][0]-waktuParkir[0][0];
+        }
+    
+        if (waktuParkir[1][0] != waktuParkir[0][0] && waktuParkir[1][1] > waktuParkir[0][1]) {
+            durasi += 1;
+        }
+        return durasi;
+    }
 
     static void hitungTarifPerjam (String jenis, int[] tarifParkir, int[][]tarifJam, int waktuParkir) {
         //Menentukan tarif per jam untuk motor
@@ -204,20 +218,11 @@ public class SistemParkir {
                 break;
             } else {
                 System.out.println("Input Invalid!\n");
-            }
-
-            
+            }           
         }
+
         //Perhitungan waktu selama parkir (jam)
-        if (waktuParkir[1][0] == waktuParkir[0][0]) {
-            durasi = 1;
-        } else {
-            durasi = waktuParkir[1][0]-waktuParkir[0][0];
-        }
-
-        if (waktuParkir[1][0] != waktuParkir[0][0] && waktuParkir[1][1] > waktuParkir[0][1]) {
-            durasi += 1;
-        }
+        durasi = hitungWaktu (waktuParkir);
 
         //Perhitungan tarif parkir per jam
         int tarifJam [][] = {
