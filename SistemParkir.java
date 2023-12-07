@@ -1,5 +1,39 @@
 import java.util.Scanner;
+
 public class SistemParkir {
+
+    static void hitungTarifPerjam (String jenis, int[] tarifParkir, int[][]tarifJam, int waktuParkir) {
+        //Menentukan tarif per jam untuk motor
+        if (jenis.equalsIgnoreCase("motor")) {
+            if (waktuParkir == 2) {
+            tarifParkir[1] = tarifJam[0][0]; //500
+            } else if (waktuParkir == 3) {
+            tarifParkir[1] = tarifJam[0][1]; //500+1000
+            } else if (waktuParkir == 4) {
+            tarifParkir[1] = tarifJam[0][2]; //500+1000+1500
+            } else if (waktuParkir == 5) {
+            tarifParkir[1] = tarifJam[0][3]; //500+1000+1500+2000
+            } else if (waktuParkir > 5) {
+            tarifParkir[1] = tarifJam[0][4]; //500+1000+1500+2000+(2000 perjam)
+            } 
+        } 
+        
+        //Menentukan tarif parkir per jam untuk mobil
+        if (jenis.equalsIgnoreCase("mobil")) {
+            if (waktuParkir == 2) {
+            tarifParkir[1] = tarifJam[1][0]; //2000
+            } else if (waktuParkir == 3) {
+            tarifParkir[1] = tarifJam[1][1]; //2000+3000
+            } else if (waktuParkir == 4) {
+            tarifParkir[1] = tarifJam[1][2]; //2000+3000+4000
+            } else if (waktuParkir == 5) {
+            tarifParkir[1] = tarifJam[1][3]; //2000+3000+4000+5000
+            } else if (waktuParkir > 5) {
+            tarifParkir[1] = tarifJam[1][4]; //2000+3000+4000+5000+(5000 perjam)
+            }            
+        }
+    }
+
     public static void main(String[] args) {
         Scanner input = new Scanner (System.in);
 
@@ -12,8 +46,8 @@ public class SistemParkir {
         //tarifParkirAwal, tarifParkirPerjam, tarifParkirAkhir, tarifHelm
         int tarifParkir [] = new int [4];
 
-        //waktuParkir[0][0], waktuParkir[0][1]
-        //waktuParkir[1][0], waktuParkir[1][1]
+        //jamAwal, menitAwal
+        //jamAkhir, menitAkhir
         int waktuParkir[][] = new int [2][2];
 
         System.out.println("============================================================");
@@ -193,34 +227,8 @@ public class SistemParkir {
             {2000, 5000, 9000, 14000 + (durasi-5)*5000}
         };
 
-        //Menentukan Tarif Parkir Perjam untuk motor
-        if (jenisKendaraan.equalsIgnoreCase("motor")) {
-            if (durasi == 2) {
-            tarifParkir[1] = tarifJam[0][0]; //500
-            } else if (durasi == 3) {
-            tarifParkir[1] = tarifJam[0][1]; //500+1000
-            } else if (durasi == 4) {
-            tarifParkir[1] = tarifJam[0][2]; //500+1000+1500
-            } else if (durasi == 5) {
-            tarifParkir[1] = tarifJam[0][3]; //500+1000+1500+2000
-            } else if (durasi > 5) {
-            tarifParkir[1] = tarifJam[0][4]; //500+1000+1500+2000+(2000 perjam)
-            } 
-        } 
-        
-        if (jenisKendaraan.equalsIgnoreCase("mobil")) {
-            if (durasi == 2) {
-            tarifParkir[1] = tarifJam[1][0]; //2000
-            } else if (durasi == 3) {
-            tarifParkir[1] = tarifJam[1][1]; //2000+3000
-            } else if (durasi == 4) {
-            tarifParkir[1] = tarifJam[1][2]; //2000+3000+4000
-            } else if (durasi == 5) {
-            tarifParkir[1] = tarifJam[1][3]; //2000+3000+4000+5000
-            } else if (durasi > 5) {
-            tarifParkir[1] = tarifJam[1][4]; //2000+3000+4000+5000+(5000 perjam)
-            }            
-        }
+        //Menentukan Tarif Parkir Perjam
+        hitungTarifPerjam (jenisKendaraan, tarifParkir, tarifJam, durasi);
 
         //Perhitungan tarif total
         tarifParkir[3] = tarifParkir[0] + tarifParkir[1] + tarifParkir[2];
