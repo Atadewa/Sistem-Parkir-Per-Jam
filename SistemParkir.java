@@ -2,129 +2,56 @@ import java.util.Scanner;
 
 public class SistemParkir {
     
-    static int hitungDenda (Scanner input, String kodeAwal) {
-        for (int counter = 0; true ; ) {
-            System.out.print("Masukkan nomor struk Anda\t: ");
-            String kodeAkhir = input.next();
-            if (kodeAkhir.equals(kodeAwal)) {
-                return 0;
-            } else {
-                System.out.println("Input Invalid!");
-                counter++;
-                if (counter%3 == 0) {
-                    System.out.println("Apakah Anda kehilangan struk pembayaran");
-                    while (true) {
-                        System.out.print("ya/tidak  : ");
-                        String strukHilang = input.next();
-                        if (strukHilang.equalsIgnoreCase("ya")) {
-                            return 20000;
-                        } else if (strukHilang.equalsIgnoreCase("tidak")) {
-                            System.out.println("");
-                            break;
-                        } else {
-                            System.out.println("Input Invalid!");
-                        }
-                    }
-                }
-            }
-        }
-    }
-
-    static int hitungWaktu(int[][]waktuParkir){
-        int durasi;
-        if (waktuParkir[1][0] == waktuParkir[0][0]) {
-            durasi = 1;
-        } else {
-            durasi = waktuParkir[1][0]-waktuParkir[0][0];
-        }
+    //Deklarasi variabel
+    static String layananHelm, exit, strukHilang = "", kodeAkhir;
+    static int urutanMasuk = 0, urutanKeluar = 0, menu, durasi, pembayaran, kembalian, nopol;
+    static float totalDiskon;
     
-        if (waktuParkir[1][0] != waktuParkir[0][0] && waktuParkir[1][1] > waktuParkir[0][1]) {
-            durasi += 1;
-        }
-        return durasi;
-    }
+    //Deklarasi array
+    static String isMember[] = new String [75];
+    static String jenisKendaraan[] = new String [75];
+    static String kodeAwal[] = new String[75];
+    static char gedung [] = new char [75];
+    static float diskon [] = new float [75]; 
+    static int idMasuk[] = new int [75]; 
+    static int tarifParkir[][] = new int [75][4];
+    static int waktuParkir[][] = new int [75][4];
+    static int totalSementara [] = new int [75];
+    static int denda [] = new int [75];
+    static int totalPembayaran [] = new int [75];
 
-    static void hitungTarifPerjam (String jenis, int[] tarifParkir, int[][]tarifJam, int waktuParkir) {
-        //Menentukan tarif per jam untuk motor
-        if (jenis.equalsIgnoreCase("motor")) {
-            if (waktuParkir == 2) {
-            tarifParkir[1] = tarifJam[0][0]; //500
-            } else if (waktuParkir == 3) {
-            tarifParkir[1] = tarifJam[0][1]; //500+1000
-            } else if (waktuParkir == 4) {
-            tarifParkir[1] = tarifJam[0][2]; //500+1000+1500
-            } else if (waktuParkir == 5) {
-            tarifParkir[1] = tarifJam[0][3]; //500+1000+1500+2000
-            } else if (waktuParkir > 5) {
-            tarifParkir[1] = tarifJam[0][4]; //500+1000+1500+2000+(2000 perjam)
-            } 
-        } 
-        
-        //Menentukan tarif parkir per jam untuk mobil
-        if (jenis.equalsIgnoreCase("mobil")) {
-            if (waktuParkir == 2) {
-            tarifParkir[1] = tarifJam[1][0]; //2000
-            } else if (waktuParkir == 3) {
-            tarifParkir[1] = tarifJam[1][1]; //2000+3000
-            } else if (waktuParkir == 4) {
-            tarifParkir[1] = tarifJam[1][2]; //2000+3000+4000
-            } else if (waktuParkir == 5) {
-            tarifParkir[1] = tarifJam[1][3]; //2000+3000+4000+5000
-            } else if (waktuParkir > 5) {
-            tarifParkir[1] = tarifJam[1][4]; //2000+3000+4000+5000+(5000 perjam)
-            }            
-        }
-    }
+    //Function dari menu 1 (Masuk parkir)
+    static void menuMasukParkir () {
 
-    public static void main(String[] args) {
         Scanner input = new Scanner (System.in);
-
-        //Deklarasi Variabel
-        String isMember, jenisKendaraan, layananHelm, kodeAwal, exit, strukHilang = "";
-        char gedung;
-        int idMasuk, totalSementara, durasi, totalPembayaran, pembayaran, denda = 0, kembalian;
-        float diskon = 0, totalDiskon;
-
-        //tarifParkirAwal, tarifParkirPerjam, tarifParkirAkhir, tarifHelm
-        int tarifParkir [] = new int [4];
-
-        //jamAwal, menitAwal
-        //jamAkhir, menitAkhir
-        int waktuParkir[][] = new int [2][2];
-
-        System.out.println("============================================================");
-        System.out.println("||                                                        ||");
-        System.out.println("||                      SELAMAT DATANG                    ||");
-        System.out.println("||                  DI PARKIRAN BOUGENVILLE               ||");
-        System.out.println("||                                                        ||");
-        System.out.println("============================================================");
 
         //User menginputkan member atau bukan
         while (true) {
-            System.out.print("\nAnda pengguna umum atau member\t: ");
-            isMember = input.next();
-            if (isMember.equalsIgnoreCase("member")) {
-                diskon = 0.1f;
+            System.out.print("Anda pengguna umum atau member\t: ");
+            isMember[urutanMasuk] = input.next();
+            if (isMember[urutanMasuk].equalsIgnoreCase("member")) {
+                diskon[urutanMasuk] = 0.1f;
                 break;
-            } else if (isMember.equalsIgnoreCase("umum")) {
+            } else if (isMember[urutanMasuk].equalsIgnoreCase("umum")) {
                 break;
             } else {
-                System.out.println("Input Invalid!");
+                System.out.println("Input Invalid!\n");
             }
         }
-
+        
         //User menginputkan nomor polisi
         System.out.print("Masukkan ID sesuai nomor polisi\t: ");
-        idMasuk = input.nextInt();
+        idMasuk[urutanMasuk] = input.nextInt();
         
         //User menginputkan jenis kendaraaan untuk menentukan tarif awal parkir
         while (true) {
             System.out.print("Jenis kendaraan (motor/mobil)\t: "); 
-            jenisKendaraan = input.next();
-            if (jenisKendaraan.equalsIgnoreCase("motor")) {
-                tarifParkir[0]=2000;
-
-                //User memilih layanan penitipan helm 
+            jenisKendaraan[urutanMasuk] = input.next();
+            if (jenisKendaraan[urutanMasuk].equalsIgnoreCase("motor")) {
+                tarifParkir[urutanMasuk][0]=2000;
+                gedung[urutanMasuk] ='A';
+                
+                //User memilih layanan penitipan helm jika jenis kendaraan motor
                 System.out.println("------------------------------------------------------------------------");
                 System.out.println("Apakah Anda ingin menggunakan layanan penitipan helm ? Tarif Rp2.000");   
                 System.out.println("------------------------------------------------------------------------");
@@ -132,7 +59,7 @@ public class SistemParkir {
                     System.out.print("(ya/tidak)\t\t\t: ");
                     layananHelm = input.next();
                     if (layananHelm.equalsIgnoreCase("ya")){
-                        tarifParkir[2] = 2000;
+                        tarifParkir[urutanMasuk][2] = 2000;
                         break;
                     } else if (layananHelm.equalsIgnoreCase("tidak")){
                         break;
@@ -142,33 +69,23 @@ public class SistemParkir {
                 }
                 System.out.println(""); 
                 break;
-            } else if (jenisKendaraan.equalsIgnoreCase("mobil")) {
-                tarifParkir[0]=5000;
+            } else if (jenisKendaraan[urutanMasuk].equalsIgnoreCase("mobil")) {
+                tarifParkir[urutanMasuk][0]=5000;
+                gedung[urutanMasuk] ='B';
                 System.out.println("");
                 break;
             } else {
                 System.out.println("Input Invalid");
             }
         }
-
-        //User menginputkan gedung parkir
-        while (true) {
-            System.out.print("Lokasi Parkir ? (Gedung A/B/C)\t: ");
-            gedung = input.next().charAt(0);
-            if (gedung =='A' || gedung == 'B' || gedung == 'C') {
-                break;
-            } else {
-                System.out.println("Input Invalid!");
-            }   
-        }
-
+        
         //User menginputkan jam dan menit ketika masuk parkiran
         while (true) {
             System.out.print("Jam masuk parkir (07-22)\t: ");
-            waktuParkir[0][0] = input.nextInt();
+            waktuParkir[urutanMasuk][0] = input.nextInt();
             System.out.print("Menit masuk parkir (00-59)\t: ");
-            waktuParkir[0][1] = input.nextInt();
-            if ( (waktuParkir[0][0] >= 7 && waktuParkir[0][0] <= 22) && (waktuParkir[0][1] >= 0 && waktuParkir[0][1] < 60)){
+            waktuParkir[urutanMasuk][1] = input.nextInt();
+            if ( (waktuParkir[urutanMasuk][0] >= 7 && waktuParkir[urutanMasuk][0] <= 22) && (waktuParkir[urutanMasuk][1] >= 0 && waktuParkir[urutanMasuk][1] < 60)){
                 break;
             } else {
                 System.out.println("Inputan Invalid!\n");
@@ -176,47 +93,189 @@ public class SistemParkir {
         }
         
         //Pembuatan kode dan perhitungan total sementara
-        kodeAwal = "2939"+gedung+idMasuk;
-        totalSementara = tarifParkir[0]+tarifParkir[2];
+        kodeAwal[urutanMasuk] = "2939" + gedung[urutanMasuk] + idMasuk[urutanMasuk];
+        totalSementara[urutanMasuk] = tarifParkir[urutanMasuk][0] + tarifParkir[urutanMasuk][2];
         
         //Output struk pembayaran
         System.out.println("\n===================================================================");
         System.out.println("                       STRUK PEMBAYARAN                         ");
-        System.out.println("              Nomor Struk               : " + kodeAwal);        
-        System.out.println("              Gedung Parkir             : " + gedung);
-        System.out.println("              Tarif Awal Parkir         : " + tarifParkir[0]);
+        System.out.println("              Nomor Struk               : " + kodeAwal[urutanMasuk]);        
+        System.out.println("              Gedung Parkir             : " + gedung[urutanMasuk]);
+        System.out.println("              Tarif Awal Parkir         : " + tarifParkir[urutanMasuk][0]);
         System.out.println("              Tarif Jam Tambahan Parkir : 0" );
-        if (jenisKendaraan.equalsIgnoreCase("motor")) {
-            System.out.println("              Tarif Penitipan Helm      : " + tarifParkir[2]);
+        if (jenisKendaraan[urutanMasuk].equalsIgnoreCase("motor")) {
+            System.out.println("              Tarif Penitipan Helm      : " + tarifParkir[urutanMasuk][2]);
         }
-        System.out.println("              Total Sementara           : "+totalSementara);
+        System.out.println("              Total Sementara           : " + totalSementara[urutanMasuk]);
         System.out.println("===================================================================\n");
+    }
+
+    static int hitungWaktu () {
+        int durasi;
+        if (waktuParkir[urutanKeluar][0] == waktuParkir[urutanKeluar][2]) {
+            durasi = 1;
+        } else {
+            durasi = waktuParkir[urutanKeluar][2]-waktuParkir[urutanKeluar][0];
+        }
+    
+        if (waktuParkir[urutanKeluar][2] != waktuParkir[urutanKeluar][0] && waktuParkir[urutanKeluar][3] > waktuParkir[urutanKeluar][1]) {
+            durasi += 1;
+        }
+        return durasi;
+    }
+
+    static void hitungTarifPerjam (int[][]tarifJam, int waktuParkir) {
+        //Menentukan tarif per jam untuk motor
+        if (jenisKendaraan[urutanKeluar].equalsIgnoreCase("motor")) {
+            if (waktuParkir == 2) {
+            tarifParkir[urutanKeluar][1] = tarifJam[0][0]; //500
+            } else if (waktuParkir == 3) {
+            tarifParkir[urutanKeluar][1] = tarifJam[0][1]; //500+1000
+            } else if (waktuParkir == 4) {
+            tarifParkir[urutanKeluar][1] = tarifJam[0][2]; //500+1000+1500
+            } else if (waktuParkir == 5) {
+            tarifParkir[urutanKeluar][1] = tarifJam[0][3]; //500+1000+1500+2000
+            } else if (waktuParkir > 5) {
+            tarifParkir[urutanKeluar][1] = tarifJam[0][4]; //500+1000+1500+2000+(2000 perjam)
+            } 
+        } 
+        
+        //Menentukan tarif parkir per jam untuk mobil
+        if (jenisKendaraan[urutanKeluar].equalsIgnoreCase("mobil")) {
+            if (waktuParkir == 2) {
+            tarifParkir[urutanKeluar][1] = tarifJam[1][0]; //2000
+            } else if (waktuParkir == 3) {
+            tarifParkir[urutanKeluar][1] = tarifJam[1][1]; //2000+3000
+            } else if (waktuParkir == 4) {
+            tarifParkir[urutanKeluar][1] = tarifJam[1][2]; //2000+3000+4000
+            } else if (waktuParkir == 5) {
+            tarifParkir[urutanKeluar][1] = tarifJam[1][3]; //2000+3000+4000+5000
+            } else if (waktuParkir > 5) {
+            tarifParkir[urutanKeluar][1] = tarifJam[1][4]; //2000+3000+4000+5000+(5000 perjam)
+            }            
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner (System.in);
+
+        System.out.println("============================================================");
+        System.out.println("||                                                        ||");
+        System.out.println("||                      SELAMAT DATANG                    ||");
+        System.out.println("||                  DI PARKIRAN BOUGENVILLE               ||");
+        System.out.println("||                                                        ||");
+        System.out.println("============================================================");
+
+        do {
+
+            System.out.println("\n---- MENU ----");
+            System.out.println("1. Masuk Parkir");
+            System.out.println("2. Keluar Parkir");
+            System.out.println("3. Cek Tempat Parkir");
+            System.out.println("4. Keluar Program\n");
+            
+            System.out.print("Pilih Menu : ");
+            menu = input.nextInt();
+
+            System.out.println();
+
+            switch (menu) {
+                case 1:
+                    menuMasukParkir();
+                    urutanMasuk++;
+                    break;
+                    
+                case 2:
+                    
+                    break;
+
+                case 3:
+                    
+                    break;
+
+                case 4:
+                    
+                    break;
+            
+                default:
+                    System.out.println("Input Invalid!\n");
+                    break;
+            }
+            
+        } while (menu != 4);
+
 
         //User keluar parkiran 
-        while (true) {
-            System.out.print("\nKetik 'Exit' jika ingin keluar parkiran : ");
-            exit = input.next();
-            if (exit.equalsIgnoreCase("exit")) {
-                break;
-            } else {
-                System.out.println("Input Invalid!");
-            }   
-        }
-        
         //Perhitungan denda dengan cara user memasukkan nomor struk/kode
         //Jika kode yang dimasukkan benar, maka denda 0. Jika kode salah, maka program akan mengulang
         //Terdapat opsi kehilangan struk setiap 3x salah memasukkan kode, dan dikenai denda 20.000
-        denda = hitungDenda(input, kodeAwal);
+
+        for (int counter = 0; true ; ) {
+            boolean isTrue = true;
+            System.out.print("Masukkan nomor struk Anda\t: ");
+            kodeAkhir = input.next();
+
+            for (int i = 0; i < kodeAwal.length; i++) {
+                if (kodeAkhir.equals(kodeAwal[i])) {
+                    urutanKeluar = i;
+                    isTrue = false;
+                    break;
+                }
+            } 
+        
+            if (!isTrue) {
+                break;
+            } else {
+                System.out.println("Input Invalid!");
+                counter++;
+                if (counter%3 == 0) {
+                    System.out.println("\nApakah Anda kehilangan struk pembayaran");
+
+                    while (isTrue) {
+                        System.out.print("ya/tidak  : ");
+                        strukHilang = input.next();
+
+                        if (strukHilang.equalsIgnoreCase("ya")) {
+                            isTrue = true;
+                            while (isTrue) {
+                                System.out.print("\nMasukkan nomor polisi Anda : ");
+                                nopol = input.nextInt();
+                                
+                                for (int j = 0; j < idMasuk.length; j++) {
+                                    if (nopol == idMasuk[j]) {
+                                        urutanKeluar = j;
+                                        denda[j] = 20000;
+                                        isTrue = false;
+                                        break;
+                                    } 
+                                }
+                                if (isTrue) {
+                                    System.out.println("Input Invalid!");
+                                }
+                            }
+                        } else if (strukHilang.equalsIgnoreCase("tidak")) {
+                            System.out.println("");
+                            break;
+                        } else {
+                            System.out.println("Input Invalid!");
+                        }
+                    }
+                }
+                if (!isTrue) {
+                    break;
+                }
+            }
+        }
 
 
         //User menginputkan jam dan menit ketika keluar parkiran
-        System.out.println(" ");
+        System.out.println();
         while (true) {
             System.out.print("Jam keluar parkir (07-22)\t: ");
-            waktuParkir[1][0] = input.nextInt();
+            waktuParkir[urutanKeluar][2] = input.nextInt();
             System.out.print("Menit keluar parkir (00-59)\t: " );
-            waktuParkir[1][1] = input.nextInt();
-            if (( waktuParkir[1][0] >= waktuParkir[0][0] && waktuParkir[1][0] < 22) && (waktuParkir[1][1] >= 0 && waktuParkir[1][1] < 60) ) {
+            waktuParkir[urutanKeluar][3] = input.nextInt();
+            if (( waktuParkir[urutanKeluar][2] >= waktuParkir[urutanKeluar][0] && waktuParkir[urutanKeluar][2] < 22) && (waktuParkir[urutanKeluar][3] >= 0 && waktuParkir[urutanKeluar][3] < 60) ) {
                 break;
             } else {
                 System.out.println("Input Invalid!\n");
@@ -224,7 +283,7 @@ public class SistemParkir {
         }
 
         //Perhitungan waktu selama parkir (jam)
-        durasi = hitungWaktu (waktuParkir);
+        durasi = hitungWaktu ();
 
         //Perhitungan tarif parkir per jam
         int tarifJam [][] = {
@@ -235,46 +294,46 @@ public class SistemParkir {
         };
 
         //Menentukan Tarif Parkir Perjam
-        hitungTarifPerjam (jenisKendaraan, tarifParkir, tarifJam, durasi);
+        hitungTarifPerjam (tarifJam, durasi);
 
         //Perhitungan tarif total
-        tarifParkir[3] = tarifParkir[0] + tarifParkir[1] + tarifParkir[2];
-        totalPembayaran = tarifParkir[3] + denda;
-        totalDiskon = totalPembayaran*diskon;
-        totalPembayaran -= totalDiskon;
+        tarifParkir[urutanKeluar][3] = tarifParkir[urutanKeluar][0] + tarifParkir[urutanKeluar][1] + tarifParkir[urutanKeluar][2];
+        totalPembayaran[urutanKeluar] = tarifParkir[urutanKeluar][3] + denda[urutanKeluar];
+        totalDiskon = totalPembayaran[urutanKeluar]*diskon[urutanKeluar];
+        totalPembayaran[urutanKeluar] -= totalDiskon;
         
         //Output nota pembayaran
         System.out.println("\n===================================================================");
         System.out.println("                         NOTA PEMBAYARAN                         ");
-        System.out.println("              Nomor struk               : " + kodeAwal);
-        System.out.println("              Gedung Parkir             : " + gedung);
-        System.out.println("              Tarif Awal Parkir         : " + tarifParkir[0]);
-        System.out.println("              Tarif Jam Tambahan Parkir : " + tarifParkir[1]);
-        if (jenisKendaraan.equalsIgnoreCase("motor")) {
-            System.out.println("              Tarif Penitipan Helm      : " + tarifParkir[2]);
+        System.out.println("              Nomor struk               : " + kodeAwal[urutanKeluar]);
+        System.out.println("              Gedung Parkir             : " + gedung[urutanKeluar]);
+        System.out.println("              Tarif Awal Parkir         : " + tarifParkir[urutanKeluar][0]);
+        System.out.println("              Tarif Jam Tambahan Parkir : " + tarifParkir[urutanKeluar][1]);
+        if (jenisKendaraan[urutanKeluar].equalsIgnoreCase("motor")) {
+            System.out.println("              Tarif Penitipan Helm      : " + tarifParkir[urutanKeluar][2]);
         }
-        if (isMember.equalsIgnoreCase("member")) {
+        if (isMember[urutanKeluar].equalsIgnoreCase("member")) {
             System.out.println("              Diskon                    : " + (int)totalDiskon);
         }
         if (strukHilang.equalsIgnoreCase("ya")) {
-            System.out.println("              Denda Kehilangan Struk    : "+denda);
+            System.out.println("              Denda Kehilangan Struk    : "+denda[urutanKeluar]);
         }
-        System.out.println("              Total                     : " + totalPembayaran);
+        System.out.println("              Total                     : " + totalPembayaran[urutanKeluar]);
         System.out.println("===================================================================\n");
         System.out.println("");
 
         //User melakukan pembayaran 
-        //Perulangan untuk melakukan pembayaran jika uang kurang dari totalPembayaran
+        //Perulangan untuk melakukan pembayaran jika uang kurang dari totalPembayaran[urutanKeluar]
         do {
             System.out.print("Masukkan nilai uang yang Anda bayar : ");
             pembayaran = input.nextInt();
-            if (pembayaran < totalPembayaran) {
+            if (pembayaran < totalPembayaran[urutanKeluar]) {
                 System.out.println("Uang Anda tidak cukup");
             }  
-        } while (pembayaran < totalPembayaran);
+        } while (pembayaran < totalPembayaran[urutanKeluar]);
 
         //User menerima kembalian
-        kembalian = pembayaran-totalPembayaran;
+        kembalian = pembayaran-totalPembayaran[urutanKeluar];
         System.out.println("Kembalian : " + kembalian);
         
         System.out.println("\n===================================================================");
