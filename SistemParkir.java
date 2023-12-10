@@ -110,106 +110,10 @@ public class SistemParkir {
         System.out.println("===================================================================\n");
     }
 
-    static int hitungWaktu () {
-        int durasi;
-        if (waktuParkir[urutanKeluar][0] == waktuParkir[urutanKeluar][2]) {
-            durasi = 1;
-        } else {
-            durasi = waktuParkir[urutanKeluar][2]-waktuParkir[urutanKeluar][0];
-        }
-    
-        if (waktuParkir[urutanKeluar][2] != waktuParkir[urutanKeluar][0] && waktuParkir[urutanKeluar][3] > waktuParkir[urutanKeluar][1]) {
-            durasi += 1;
-        }
-        return durasi;
-    }
+    //Function dari menu 2(Keluar parkir)
+    static void menuKeluarParkir(){
 
-    static void hitungTarifPerjam (int[][]tarifJam, int waktuParkir) {
-        //Menentukan tarif per jam untuk motor
-        if (jenisKendaraan[urutanKeluar].equalsIgnoreCase("motor")) {
-            if (waktuParkir == 2) {
-            tarifParkir[urutanKeluar][1] = tarifJam[0][0]; //500
-            } else if (waktuParkir == 3) {
-            tarifParkir[urutanKeluar][1] = tarifJam[0][1]; //500+1000
-            } else if (waktuParkir == 4) {
-            tarifParkir[urutanKeluar][1] = tarifJam[0][2]; //500+1000+1500
-            } else if (waktuParkir == 5) {
-            tarifParkir[urutanKeluar][1] = tarifJam[0][3]; //500+1000+1500+2000
-            } else if (waktuParkir > 5) {
-            tarifParkir[urutanKeluar][1] = tarifJam[0][4]; //500+1000+1500+2000+(2000 perjam)
-            } 
-        } 
-        
-        //Menentukan tarif parkir per jam untuk mobil
-        if (jenisKendaraan[urutanKeluar].equalsIgnoreCase("mobil")) {
-            if (waktuParkir == 2) {
-            tarifParkir[urutanKeluar][1] = tarifJam[1][0]; //2000
-            } else if (waktuParkir == 3) {
-            tarifParkir[urutanKeluar][1] = tarifJam[1][1]; //2000+3000
-            } else if (waktuParkir == 4) {
-            tarifParkir[urutanKeluar][1] = tarifJam[1][2]; //2000+3000+4000
-            } else if (waktuParkir == 5) {
-            tarifParkir[urutanKeluar][1] = tarifJam[1][3]; //2000+3000+4000+5000
-            } else if (waktuParkir > 5) {
-            tarifParkir[urutanKeluar][1] = tarifJam[1][4]; //2000+3000+4000+5000+(5000 perjam)
-            }            
-        }
-    }
-
-    public static void main(String[] args) {
-        Scanner input = new Scanner (System.in);
-
-        System.out.println("============================================================");
-        System.out.println("||                                                        ||");
-        System.out.println("||                      SELAMAT DATANG                    ||");
-        System.out.println("||                  DI PARKIRAN BOUGENVILLE               ||");
-        System.out.println("||                                                        ||");
-        System.out.println("============================================================");
-
-        do {
-
-            System.out.println("\n---- MENU ----");
-            System.out.println("1. Masuk Parkir");
-            System.out.println("2. Keluar Parkir");
-            System.out.println("3. Cek Tempat Parkir");
-            System.out.println("4. Keluar Program\n");
-            
-            System.out.print("Pilih Menu : ");
-            menu = input.nextInt();
-
-            System.out.println();
-
-            switch (menu) {
-                case 1:
-                    menuMasukParkir();
-                    urutanMasuk++;
-                    break;
-                    
-                case 2:
-                    
-                    break;
-
-                case 3:
-                    
-                    break;
-
-                case 4:
-                    
-                    break;
-            
-                default:
-                    System.out.println("Input Invalid!\n");
-                    break;
-            }
-            
-        } while (menu != 4);
-
-
-        //User keluar parkiran 
-        //Perhitungan denda dengan cara user memasukkan nomor struk/kode
-        //Jika kode yang dimasukkan benar, maka denda 0. Jika kode salah, maka program akan mengulang
-        //Terdapat opsi kehilangan struk setiap 3x salah memasukkan kode, dan dikenai denda 20.000
-
+        Scanner input = new Scanner(System.in);
         for (int counter = 0; true ; ) {
             boolean isTrue = true;
             System.out.print("Masukkan nomor struk Anda\t: ");
@@ -335,6 +239,103 @@ public class SistemParkir {
         //User menerima kembalian
         kembalian = pembayaran-totalPembayaran[urutanKeluar];
         System.out.println("Kembalian : " + kembalian);
+   }
+    
+    static int hitungWaktu () {
+        int durasi;
+        if (waktuParkir[urutanKeluar][0] == waktuParkir[urutanKeluar][2]) {
+            durasi = 1;
+        } else {
+            durasi = waktuParkir[urutanKeluar][2]-waktuParkir[urutanKeluar][0];
+        }
+    
+        if (waktuParkir[urutanKeluar][2] != waktuParkir[urutanKeluar][0] && waktuParkir[urutanKeluar][3] > waktuParkir[urutanKeluar][1]) {
+            durasi += 1;
+        }
+        return durasi;
+    }
+
+    static void hitungTarifPerjam (int[][]tarifJam, int waktuParkir) {
+        //Menentukan tarif per jam untuk motor
+        if (jenisKendaraan[urutanKeluar].equalsIgnoreCase("motor")) {
+            if (waktuParkir == 2) {
+            tarifParkir[urutanKeluar][1] = tarifJam[0][0]; //500
+            } else if (waktuParkir == 3) {
+            tarifParkir[urutanKeluar][1] = tarifJam[0][1]; //500+1000
+            } else if (waktuParkir == 4) {
+            tarifParkir[urutanKeluar][1] = tarifJam[0][2]; //500+1000+1500
+            } else if (waktuParkir == 5) {
+            tarifParkir[urutanKeluar][1] = tarifJam[0][3]; //500+1000+1500+2000
+            } else if (waktuParkir > 5) {
+            tarifParkir[urutanKeluar][1] = tarifJam[0][4]; //500+1000+1500+2000+(2000 perjam)
+            } 
+        } 
+        
+        //Menentukan tarif parkir per jam untuk mobil
+        if (jenisKendaraan[urutanKeluar].equalsIgnoreCase("mobil")) {
+            if (waktuParkir == 2) {
+            tarifParkir[urutanKeluar][1] = tarifJam[1][0]; //2000
+            } else if (waktuParkir == 3) {
+            tarifParkir[urutanKeluar][1] = tarifJam[1][1]; //2000+3000
+            } else if (waktuParkir == 4) {
+            tarifParkir[urutanKeluar][1] = tarifJam[1][2]; //2000+3000+4000
+            } else if (waktuParkir == 5) {
+            tarifParkir[urutanKeluar][1] = tarifJam[1][3]; //2000+3000+4000+5000
+            } else if (waktuParkir > 5) {
+            tarifParkir[urutanKeluar][1] = tarifJam[1][4]; //2000+3000+4000+5000+(5000 perjam)
+            }            
+        }
+    }
+
+    public static void main(String[] args) {
+        Scanner input = new Scanner (System.in);
+
+        System.out.println("============================================================");
+        System.out.println("||                                                        ||");
+        System.out.println("||                      SELAMAT DATANG                    ||");
+        System.out.println("||                  DI PARKIRAN BOUGENVILLE               ||");
+        System.out.println("||                                                        ||");
+        System.out.println("============================================================");
+
+        do {
+
+            System.out.println("\n---- MENU ----");
+            System.out.println("1. Masuk Parkir");
+            System.out.println("2. Keluar Parkir");
+            System.out.println("3. Cek Tempat Parkir");
+            System.out.println("4. Keluar Program\n");
+            
+            System.out.print("Pilih Menu : ");
+            menu = input.nextInt();
+
+            System.out.println();
+
+            switch (menu) {
+                case 1:
+                    menuMasukParkir();
+                    urutanMasuk++;
+                    break;
+                    
+                case 2:
+                    menuKeluarParkir();
+                    break;
+                    
+
+                case 3:
+                    
+                    break;
+
+                case 4:
+                    
+                    break;
+            
+                default:
+                    System.out.println("Input Invalid!\n");
+                    break;
+            }
+            
+        } while (menu != 4);
+
         
         System.out.println("\n===================================================================");
         System.out.println("||                                                               ||");
