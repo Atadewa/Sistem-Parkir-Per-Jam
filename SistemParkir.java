@@ -8,20 +8,20 @@ public class SistemParkir {
     static float totalDiskon;
 
     // Deklarasi array
-    static String isMember[] = new String[75];
-    static String jenisKendaraan[] = new String[75];
-    static String kodeAwal[] = new String[75];
-    static char gedung[] = new char[75];
-    static float diskon[] = new float[75];
-    static int idMasuk[] = new int[75];
+    static String isMember[] = new String[20000];
+    static String jenisKendaraan[] = new String[20000];
+    static String kodeAwal[] = new String[20000];
+    static char gedung[] = new char[20000];
+    static float diskon[] = new float[20000];
+    static int idMasuk[] = new int[20000];
     static int kapasitasGedung[] = { 50, 25 };
-    static int tarifParkir[][] = new int[75][4];
-    static int waktuParkir[][] = new int[75][4];
-    static int durasi[] = new int[75];
-    static int totalSementara[] = new int[75];
-    static int denda[] = new int[75];
-    static int totalPembayaran[] = new int[75];
-    static int pembayaran[] = new int[75];
+    static int tarifParkir[][] = new int[20000][4];
+    static int waktuParkir[][] = new int[20000][4];
+    static int durasi[] = new int[20000];
+    static int totalSementara[] = new int[20000];
+    static int denda[] = new int[20000];
+    static int totalPembayaran[] = new int[20000];
+    static int pembayaran[] = new int[20000];
 
     // Function dari menu 1 (Masuk parkir)
     static void menuMasukParkir() {
@@ -90,8 +90,7 @@ public class SistemParkir {
             waktuParkir[urutanMasuk][0] = input.nextInt();
             System.out.print("Menit masuk parkir (00-59)\t: ");
             waktuParkir[urutanMasuk][1] = input.nextInt();
-            if ((waktuParkir[urutanMasuk][0] >= 7 && waktuParkir[urutanMasuk][0] <= 22)
-                    && (waktuParkir[urutanMasuk][1] >= 0 && waktuParkir[urutanMasuk][1] < 60)) {
+            if ((waktuParkir[urutanMasuk][0] >= 7 && waktuParkir[urutanMasuk][0] <= 22) && (waktuParkir[urutanMasuk][1] >= 0 && waktuParkir[urutanMasuk][1] < 60)) {
                 break;
             } else {
                 System.out.println("Inputan Invalid!\n");
@@ -184,8 +183,7 @@ public class SistemParkir {
             waktuParkir[urutanKeluar][2] = input.nextInt();
             System.out.print("Menit keluar parkir (00-59)\t: ");
             waktuParkir[urutanKeluar][3] = input.nextInt();
-            if ((waktuParkir[urutanKeluar][2] >= waktuParkir[urutanKeluar][0] && waktuParkir[urutanKeluar][2] < 22)
-                    && (waktuParkir[urutanKeluar][3] >= 0 && waktuParkir[urutanKeluar][3] < 60)) {
+            if ((waktuParkir[urutanKeluar][2] >= waktuParkir[urutanKeluar][0] && waktuParkir[urutanKeluar][2] < 22) && (waktuParkir[urutanKeluar][3] >= 0 && waktuParkir[urutanKeluar][3] < 60)) {
                 break;
             } else {
                 System.out.println("Input Invalid!\n");
@@ -207,8 +205,7 @@ public class SistemParkir {
         hitungTarifPerjam(tarifJam);
 
         // Perhitungan tarif total
-        tarifParkir[urutanKeluar][3] = tarifParkir[urutanKeluar][0] + tarifParkir[urutanKeluar][1]
-                + tarifParkir[urutanKeluar][2];
+        tarifParkir[urutanKeluar][3] = tarifParkir[urutanKeluar][0] + tarifParkir[urutanKeluar][1] + tarifParkir[urutanKeluar][2];
         totalPembayaran[urutanKeluar] = tarifParkir[urutanKeluar][3] + denda[urutanKeluar];
         totalDiskon = totalPembayaran[urutanKeluar] * diskon[urutanKeluar];
         totalPembayaran[urutanKeluar] -= totalDiskon;
@@ -267,37 +264,28 @@ public class SistemParkir {
 
     static void keluarProgram() {
         System.out.println("Laporan Data Parkir");
-        System.out.println(
-                "----------------------------------------------------------------------------------------------------");
-        System.out.printf("| %s | %s | %s | %s | %s | %s | %s |\n", "NO", "Jenis Kendaraan", "Status", "Kode Struk",
-                "Waktu Parkir", "Total Pembayaran", "Status Pembayaran");
-        System.out.println(
-                "----------------------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------");
+        System.out.printf("| %s | %s | %s | %s | %s | %s | %s |\n", "NO", "Jenis Kendaraan", "Status", "Kode Struk", "Waktu Parkir", "Total Pembayaran", "Status Pembayaran");
+        System.out.println("----------------------------------------------------------------------------------------------------");
         for (int i = 0; i < idMasuk.length; i++) {
             if (idMasuk[i] != 0 && pembayaran[i] != 0) {
-                System.out.printf("| %2d | %-15s | %-6s | %-10s | %-12s | %-16s | %-17s |\n", (i + 1),
-                        jenisKendaraan[i], isMember[i], kodeAwal[i], durasi[i] + " jam", "Rp " + totalPembayaran[i],
-                        "V");
+                System.out.printf("| %2d | %-15s | %-6s | %-10s | %-12s | %-16s | %-17s |\n", (i + 1), jenisKendaraan[i], isMember[i], kodeAwal[i], durasi[i] + " jam", "Rp " + totalPembayaran[i], "V");
             }
             if (idMasuk[i] != 0 && pembayaran[i] == 0) {
-                System.out.printf("| %2d | %-15s | %-6s | %-10s | %-12s | %-16s | %-17s |\n", (i + 1),
-                        jenisKendaraan[i], isMember[i], kodeAwal[i], "-", "Rp " + "-", "X");
+                System.out.printf("| %2d | %-15s | %-6s | %-10s | %-12s | %-16s | %-17s |\n", (i + 1), jenisKendaraan[i], isMember[i], kodeAwal[i], "-", "Rp " + "-", "X");
             }
         }
-        System.out.println(
-                "----------------------------------------------------------------------------------------------------");
+        System.out.println("----------------------------------------------------------------------------------------------------");
     }
 
     static void hitungWaktu() {
-
         if (waktuParkir[urutanKeluar][0] == waktuParkir[urutanKeluar][2]) {
             durasi[urutanKeluar] = 1;
         } else {
             durasi[urutanKeluar] = waktuParkir[urutanKeluar][2] - waktuParkir[urutanKeluar][0];
         }
 
-        if (waktuParkir[urutanKeluar][2] != waktuParkir[urutanKeluar][0]
-                && waktuParkir[urutanKeluar][3] > waktuParkir[urutanKeluar][1]) {
+        if (waktuParkir[urutanKeluar][2] != waktuParkir[urutanKeluar][0] && waktuParkir[urutanKeluar][3] > waktuParkir[urutanKeluar][1]) {
             durasi[urutanKeluar] += 1;
         }
     }
@@ -381,11 +369,10 @@ public class SistemParkir {
                     break;
 
                 case 4:
-                    if (jmlKendaraan == 0) {
+                    if (idMasuk[0] == 0) {
                         System.out.println("Belum Ada Kendaraan yang Parkir!");
                     } else {
                         keluarProgram();
-                        jmlKendaraan--;
                     }
                     break;
 
