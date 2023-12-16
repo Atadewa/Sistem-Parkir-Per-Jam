@@ -11,12 +11,14 @@ public class SistemParkir {
     static String isMember[] = new String[20000];
     static String jenisKendaraan[] = new String[20000];
     static String kodeAwal[] = new String[20000];
+    static boolean gedungMotor[] = new boolean[50];
+    static boolean gedungMobil[] = new boolean[25];
     static char gedung[] = new char[20000];
     static float diskon[] = new float[20000];
     static int idMasuk[] = new int[20000];
-    static int kapasitasGedung[] = { 50, 25 };
     static int tarifParkir[][] = new int[20000][4];
     static int waktuParkir[][] = new int[20000][4];
+    static int kapasitasGedung[] = {50,25};
     static int durasi[] = new int[20000];
     static int totalSementara[] = new int[20000];
     static int denda[] = new int[20000];
@@ -259,7 +261,43 @@ public class SistemParkir {
         System.out.println("---------------------------------------------------");
 
         System.out.println("Tempat parkir motor : " + kapasitasGedung[0]);
+        System.out.println("           DENAH PARKIR MOTOR  ");
+        System.out.println("-----------------------------------------\n");
+        int spasi = 0;
+        for (int i = 0; i < gedungMotor.length; i++) {
+            if (spasi == 0 || spasi %10 == 0) {
+                System.out.print("|");
+            }
+            if (gedungMotor [i] == false) {
+                System.out.print("   |");
+            } else {
+                System.out.print(" X |");
+            }
+            spasi++;
+            if (spasi%10 == 0) {
+                System.out.println("\n");
+            }
+        }
+        System.out.println("-----------------------------------------");
         System.out.println("Tempat parkir mobil : " + kapasitasGedung[1]);
+        System.out.println("\n          DENAH PARKIR MOBIL  ");
+        System.out.println("-----------------------------------------\n");
+        spasi = 0;
+        for (int i = 0; i < gedungMobil.length; i++) {
+            if (spasi == 0 || spasi %5 == 0) {
+                System.out.print("|");
+            }
+            if (gedungMobil [i] == false) {
+                System.out.print("   |");
+            } else {
+                System.out.print(" X |");
+            }
+            spasi++;
+            if (spasi%5 == 0) {
+                System.out.println("\n");
+            }
+        }
+        System.out.println("-----------------------------------------");
     }
 
     static void keluarProgram() {
