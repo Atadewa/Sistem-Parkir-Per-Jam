@@ -11,6 +11,7 @@ public class SistemParkir {
     static String isMember[] = new String[20000];
     static String jenisKendaraan[] = new String[20000];
     static String kodeAwal[] = new String[20000];
+    static String hurufParkir[] = new String[20000];
     static boolean gedungMotor[] = new boolean[50];
     static boolean gedungMobil[] = new boolean[25];
     static char gedung[] = new char[20000];
@@ -19,6 +20,8 @@ public class SistemParkir {
     static int tarifParkir[][] = new int[20000][4];
     static int waktuParkir[][] = new int[20000][4];
     static int kapasitasGedung[] = {50,25};
+    static int angkaParkir[] = new int[20000];
+    static int kodeTempatParkir[] = new int[20000];
     static int durasi[] = new int[20000];
     static int totalSementara[] = new int[20000];
     static int denda[] = new int[20000];
@@ -86,6 +89,7 @@ public class SistemParkir {
             }
         }
 
+        
         // User menginputkan jam dan menit ketika masuk parkiran
         while (true) {
             System.out.print("Jam masuk parkir (07-22)\t: ");
@@ -99,10 +103,88 @@ public class SistemParkir {
             }
         }
 
+        //User memilih tempat parkir
+        if (jenisKendaraan[urutanMasuk].equalsIgnoreCase("motor")) {
+            cekDenahParkirMotor();
+            while (true) {
+                System.out.println("\nSilahkan Pilih Tempat Parkir");
+                System.out.print("Huruf (A-J): ");
+                hurufParkir[urutanMasuk] = input.next();
+                System.out.print("Angka (1-5): ");
+                angkaParkir[urutanMasuk] = input.nextInt();
+                
+                if ((hurufParkir[urutanMasuk].equals("A") || 
+                hurufParkir[urutanMasuk].equals("B")|| 
+                    hurufParkir[urutanMasuk].equals("C")|| 
+                    hurufParkir[urutanMasuk].equals("D")|| 
+                    hurufParkir[urutanMasuk].equals("E")|| 
+                    hurufParkir[urutanMasuk].equals("F")|| 
+                    hurufParkir[urutanMasuk].equals("G")|| 
+                    hurufParkir[urutanMasuk].equals("H")|| 
+                    hurufParkir[urutanMasuk].equals("I")|| 
+                    hurufParkir[urutanMasuk].equals("J")) && (
+                    angkaParkir[urutanMasuk] == 1 ||    
+                    angkaParkir[urutanMasuk] == 2 ||    
+                    angkaParkir[urutanMasuk] == 3 ||    
+                    angkaParkir[urutanMasuk] == 4 ||    
+                    angkaParkir[urutanMasuk] == 5 )) {
+
+                    isiTempatParkir();
+
+                    if (gedungMotor[kodeTempatParkir[urutanMasuk]] == true) {
+                        System.out.println("Sudah terisi oleh kendaraan lain!");
+                        continue;
+                    } else {
+                        gedungMotor[kodeTempatParkir[urutanMasuk]] = true;
+                        break;
+                    }
+                    
+                } else {
+                    System.out.println("Input Invalid!");
+                } 
+            }
+        }
+
+        if (jenisKendaraan[urutanMasuk].equalsIgnoreCase("mobil")) {
+            cekDenahParkirMobil();
+            while (true) {
+                System.out.println("\nSilahkan Pilih Tempat Parkir");
+                System.out.print("Huruf (K-O) : ");
+                hurufParkir[urutanMasuk] = input.next();
+                System.out.print("Angka (6-10): ");
+                angkaParkir[urutanMasuk] = input.nextInt();
+
+                if ((hurufParkir[urutanMasuk].equals("K") || 
+                hurufParkir[urutanMasuk].equals("L")|| 
+                hurufParkir[urutanMasuk].equals("M")|| 
+                hurufParkir[urutanMasuk].equals("N")|| 
+                hurufParkir[urutanMasuk].equals("O")) && (
+                    angkaParkir[urutanMasuk] == 6 ||    
+                    angkaParkir[urutanMasuk] == 7 ||    
+                    angkaParkir[urutanMasuk] == 8 ||    
+                    angkaParkir[urutanMasuk] == 9 ||    
+                    angkaParkir[urutanMasuk] == 10 )) {
+                        
+                        isiTempatParkir();
+                        
+                        if (gedungMobil[kodeTempatParkir[urutanMasuk]] == true) {
+                            System.out.println("Sudah terisi oleh kendaraan lain!");
+                            continue;
+                        } else {
+                            gedungMobil[kodeTempatParkir[urutanMasuk]] = true;
+                            break;
+                        }
+                        
+                } else {
+                    System.out.println("Input Invalid!");
+                } 
+            }
+        }
+        
         // Pembuatan kode dan perhitungan total sementara
         kodeAwal[urutanMasuk] = "2939" + gedung[urutanMasuk] + idMasuk[urutanMasuk];
         totalSementara[urutanMasuk] = tarifParkir[urutanMasuk][0] + tarifParkir[urutanMasuk][2];
-
+        
         // Output struk pembayaran
         System.out.println("\n===================================================================");
         System.out.println("                       STRUK PEMBAYARAN                         ");
@@ -115,6 +197,111 @@ public class SistemParkir {
         }
         System.out.println("              Total Sementara           : " + totalSementara[urutanMasuk]);
         System.out.println("===================================================================\n");
+    }
+
+    //Deteksi Kode Tempat Parkir
+    static void isiTempatParkir() {
+        int bil = 0;
+        if (jenisKendaraan[urutanMasuk].equalsIgnoreCase("motor")) {
+            for (int i = 1; i <= 5; i++) {
+                if (hurufParkir[urutanMasuk].equals("A")) {
+                        if (angkaParkir[urutanMasuk] == i) {
+                        kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("B")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                        kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("C")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                        kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("D")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                        kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("E")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                        kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("F")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                        kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("G")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                        kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("H")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                        kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("I")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                        kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("J")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                        kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+            }
+        }
+
+        bil = 0;
+        if (jenisKendaraan[urutanMasuk].equalsIgnoreCase("mobil")) {
+            for (int i = 6; i <= 10; i++) {
+                if (hurufParkir[urutanMasuk].equals("K")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                    kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("L")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                    kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("M")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                    kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("N")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                    kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+                if (hurufParkir[urutanMasuk].equals("O")) {
+                    if (angkaParkir[urutanMasuk] == i) {
+                    kodeTempatParkir[urutanMasuk] = bil;
+                    }
+                }
+                bil++;
+            }
+        }
     }
 
     // Function dari menu 2(Keluar parkir)
@@ -133,7 +320,7 @@ public class SistemParkir {
                     break;
                 }
             }
-
+            
             if (!isTrue) {
                 break;
             } else {
@@ -242,28 +429,27 @@ public class SistemParkir {
                 System.out.println("Uang Anda tidak cukup");
             }
         } while (pembayaran[urutanKeluar] < totalPembayaran[urutanKeluar]);
-
+        
         // User menerima kembalian
         kembalian = pembayaran[urutanKeluar] - totalPembayaran[urutanKeluar];
         System.out.println("Kembalian : " + kembalian);
-
+        
+        
         if (jenisKendaraan[urutanKeluar].equalsIgnoreCase("motor")) {
+            gedungMotor[kodeTempatParkir[urutanKeluar]] = false;
             kapasitasGedung[0]++;
         } else {
+            gedungMobil[kodeTempatParkir[urutanKeluar]] = false;
             kapasitasGedung[1]++;
         }
     }
 
-    // Fungsi untuk menampilkan informasi tempat parkir pada suatu gedung
-    static void cekTempatParkir() {
-        System.out.println("---------------------------------------------------");
-        System.out.println("             CEK TEMPAT PARKIR (KAPASITAS)           ");
-        System.out.println("---------------------------------------------------");
-
-        System.out.println("Tempat parkir motor : " + kapasitasGedung[0]);
-        System.out.println("           DENAH PARKIR MOTOR  ");
-        System.out.println("-----------------------------------------\n");
+    static void cekDenahParkirMotor() {
+        System.out.println("\n           DENAH PARKIR MOTOR  ");
+        System.out.println("---------------------------------------------\n");
+        System.out.println("  A   B   C   D   E   F   G   H   I   J\n");
         int spasi = 0;
+        int urutan = 1;
         for (int i = 0; i < gedungMotor.length; i++) {
             if (spasi == 0 || spasi %10 == 0) {
                 System.out.print("|");
@@ -275,14 +461,19 @@ public class SistemParkir {
             }
             spasi++;
             if (spasi%10 == 0) {
-                System.out.println("\n");
+                System.out.println("  " + urutan + "\n");
+                urutan++;
             }
         }
-        System.out.println("-----------------------------------------");
-        System.out.println("Tempat parkir mobil : " + kapasitasGedung[1]);
-        System.out.println("\n          DENAH PARKIR MOBIL  ");
-        System.out.println("-----------------------------------------\n");
-        spasi = 0;
+        System.out.println("---------------------------------------------");
+    }
+
+    static void cekDenahParkirMobil (){
+        System.out.println("\n  DENAH PARKIR MOBIL  ");
+        System.out.println("-------------------------\n");
+        System.out.println("  K   L   M   N   O\n");
+        int spasi = 0;
+        int urutan = 6;
         for (int i = 0; i < gedungMobil.length; i++) {
             if (spasi == 0 || spasi %5 == 0) {
                 System.out.print("|");
@@ -294,12 +485,25 @@ public class SistemParkir {
             }
             spasi++;
             if (spasi%5 == 0) {
-                System.out.println("\n");
+                System.out.println("  " + urutan + "\n");
+                urutan++;
             }
         }
-        System.out.println("-----------------------------------------");
+        System.out.println("-------------------------");
     }
-
+    
+    // Fungsi untuk menampilkan informasi tempat parkir pada suatu gedung
+    static void cekTempatParkir() {
+        System.out.println("---------------------------------------------------");
+        System.out.println("             CEK TEMPAT PARKIR (KAPASITAS)           ");
+        System.out.println("---------------------------------------------------");
+        
+        System.out.println("Tempat parkir motor : " + kapasitasGedung[0]);
+        System.out.println("Tempat parkir mobil : " + kapasitasGedung[1]);
+        cekDenahParkirMotor();
+        cekDenahParkirMobil();
+    }
+    
     static void keluarProgram() {
         System.out.println("Laporan Data Parkir");
         System.out.println("----------------------------------------------------------------------------------------------------");
@@ -388,9 +592,13 @@ public class SistemParkir {
 
             switch (menu) {
                 case 1:
+                if (kapasitasGedung[0] == 0 && kapasitasGedung[1] == 0) {
+                    System.out.println("PARKIRAN PENUH !");
+                } else {
                     menuMasukParkir();
                     urutanMasuk++;
                     jmlKendaraan++;
+                }
                     break;
 
                 case 2:
@@ -403,12 +611,17 @@ public class SistemParkir {
                     break;
 
                 case 3:
-                    cekTempatParkir();
+                    if (kapasitasGedung[0] == 0 && kapasitasGedung[1] == 0) {
+                        System.out.println("PARKIRAN PENUH !");
+                    } else {
+                        cekTempatParkir();
+                    }
                     break;
 
                 case 4:
                     if (idMasuk[0] == 0) {
                         System.out.println("Belum Ada Kendaraan yang Parkir!");
+                        isiTempatParkir();
                     } else {
                         keluarProgram();
                     }
